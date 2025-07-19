@@ -208,10 +208,10 @@ if (navbarLogo) {
         const startY = logoRect.top + scrollY;
 
         // Create falling letters
-        const logoText = 'SHOUKO';
+        const logoText = 'Bhavitha';
 
         // Define subtle weight differences for natural variation
-        const letterWeights = [1.1, 0.9, 1.0, 0.95, 1.05, 1.0]; // S, H, O, U, K, O
+        const letterWeights = [1.1, 0.9, 1.0, 0.95, 1.05, 1.0,1.05,0.95]; // S, H, O, U, K, O
 
         function createFallingLetter(letter, index) {
             const letterElement = document.createElement('div');
