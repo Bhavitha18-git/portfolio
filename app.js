@@ -211,13 +211,36 @@ if (navbarLogo) {
         const logoText = 'Bhavitha';
 
         // Define subtle weight differences for natural variation
-        const letterWeights = [1.1, 0.9, 1.0, 0.95, 1.05, 1.0,1.05,0.95]; // S, H, O, U, K, O
+        const letterWeights = [1.1, 0.9, 1.0, 0.95, 1.05, 1.0, 1.05, 0.95]; // B, h, a, v, i, t, h, a
+
+        // Calculate actual character positions by measuring text
+        function getCharacterPositions(text, element) {
+            const positions = [];
+            const tempSpan = document.createElement('span');
+            tempSpan.style.visibility = 'hidden';
+            tempSpan.style.position = 'absolute';
+            tempSpan.style.fontSize = window.getComputedStyle(element).fontSize;
+            tempSpan.style.fontWeight = window.getComputedStyle(element).fontWeight;
+            tempSpan.style.fontFamily = window.getComputedStyle(element).fontFamily;
+            document.body.appendChild(tempSpan);
+
+            for (let i = 0; i < text.length; i++) {
+                tempSpan.textContent = text.substring(0, i);
+                const width = tempSpan.offsetWidth;
+                positions.push(width);
+            }
+
+            document.body.removeChild(tempSpan);
+            return positions;
+        }
+
+        const characterPositions = getCharacterPositions(logoText, navbarLogo);
 
         function createFallingLetter(letter, index) {
             const letterElement = document.createElement('div');
             letterElement.textContent = letter;
             letterElement.style.position = 'absolute';
-            letterElement.style.left = (startX + (index * 20)) + 'px';
+            letterElement.style.left = (startX + characterPositions[index]) + 'px';
             letterElement.style.top = startY + 'px';
             letterElement.style.fontSize = '24px';
             letterElement.style.fontWeight = '700';
@@ -249,7 +272,7 @@ if (navbarLogo) {
                 const easing = progress * progress;
 
                 const currentY = startY + (fallDistance * easing);
-                const currentX = startX + (index * 20) + (horizontalDrift * progress * 0.5);
+                const currentX = startX + characterPositions[index] + (horizontalDrift * progress * 0.5);
                 const currentRotation = rotationAmount * progress * 0.5;
                 const currentOpacity = Math.max(0.1, 1 - (progress * 0.8));
 
